@@ -1,0 +1,23 @@
+﻿@model Authority.Models.AccountHelper
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+<div>Edit your account</div>
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        <p>Your Username is: @Model.UserName</p>
+        <p>Change it to: @Html.EditorFor(m => m.UserName)</p>
+        </div>
+    <br />
+
+    <div class="form-group">        
+        <p>Your Password is: @Model.Password</p>
+        <p>Change it to: @Html.EditorFor(m => m.Password)</p>
+    </div>
+    <input type="submit" value="submit"/>
+}

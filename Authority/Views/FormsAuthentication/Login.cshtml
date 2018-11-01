@@ -1,0 +1,20 @@
+﻿@model Authority.Models.AccountHelper
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Login</h2>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary()
+    <div class="form-group">
+        <label>User name</label>
+        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label>Password</label>
+        @Html.TextBoxFor(m => m.Password, new { @class = "form-control" })
+    </div>
+    <input type="submit" value="Log In" class="btn-primary" />
+}

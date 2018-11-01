@@ -1,0 +1,15 @@
+﻿@model Authority.Models.AccountHelper
+
+@{
+    ViewBag.Title = "Add";    
+}
+
+<h2>Create Account</h2>
+@using (Html.BeginForm())
+{
+    <div class="form-group">        
+        <p>UserName: @Html.EditorFor(m => m.UserName)</p>
+        <p>Password: @Html.EditorFor(m => m.Password)</p>
+    </div>
+    <input type="submit" value="submit"/>
+}
