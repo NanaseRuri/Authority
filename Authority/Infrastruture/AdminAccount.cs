@@ -14,6 +14,7 @@ namespace Authority.Infrastruture
     {
         public void OnAuthentication(AuthenticationContext filterContext)
         {
+            //获取当前上下文中的用户
             IIdentity identity = filterContext.Principal.Identity;
             if (identity.Name!="admin" || !identity.IsAuthenticated)
             {
@@ -28,8 +29,7 @@ namespace Authority.Infrastruture
                 filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary()
                 {
                     {"controller","FormsAuthentication" },
-                    { "action","Login"},
-                    {"returnUrl",filterContext.HttpContext.Request.RawUrl }
+                    { "action","ReLogin"},
                 });
             }
         }

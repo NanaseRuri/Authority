@@ -125,5 +125,10 @@ namespace Authority.Controllers
 
             return View("Create", newAccount);
         }
+
+        public ActionResult ReLogin()
+        {
+            return View();
+        }
     }
 }
