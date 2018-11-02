@@ -25,18 +25,23 @@ namespace Authority.Controllers
         [HttpPost]
         //returnUrl 用于未在 Login 处进行验证而直接访问带有 [Authorize] 修饰的视图时，在验证后可返回原来访问的地址。
         public ActionResult Login(AccountHelper helper,string returnUrl)
-        {
+        {            
+            //满足[Required]修饰
             if (ModelState.IsValid)
             {
                 if (FormsAuthentication.Authenticate(helper.UserName, helper.Password))
                 {
+                    //保存当前账号信息
                     account.UserName = helper.UserName;
                     account.Password = helper.Password;
+
+                    //保存Cookie
                     FormsAuthentication.SetAuthCookie(helper.UserName,false);
                     return Redirect(returnUrl ?? Url.Action("AfterAuthority",account));
                 }
                 else
                 {
+                    //当验证失败时，向 ModelState 添加错误
                     ModelState.AddModelError("", "Error account or password");
                     return View();
                 }
@@ -108,12 +113,12 @@ namespace Authority.Controllers
             //获取 user 节点的父节点
             XmlNode credentials = nodes[0].ParentNode;
             //获得任意一个 user 节点的深拷贝
-            XmlNode child = nodes[0].Clone();
+            XmlNode newChild = nodes[0].Clone();
 
-            child.Attributes["name"].Value = newAccount.UserName;
-            child.Attributes["password"].Value = newAccount.Password;
+            newChild.Attributes["name"].Value = newAccount.UserName;
+            newChild.Attributes["password"].Value = newAccount.Password;
             //将子结点添加到父节点
-            credentials.AppendChild(child);
+            credentials.AppendChild(newChild);
 
             //将修改后的 Web.config 进行保存
             doc.Save(strFileName);
