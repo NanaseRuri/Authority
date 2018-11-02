@@ -1,0 +1,22 @@
+﻿<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />    
+    <link href="~/Content/Site.css"/>
+    <style>
+        .container {
+            padding-top: 10px;
+        }
+
+        .validation-summary-errors {
+            color: #f00;
+        }
+    </style>
+</head>
+<body class="container">
+<div class="container">
+        @RenderBody()
+</div>
+</body>
+</html>

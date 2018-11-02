@@ -12,9 +12,11 @@ namespace Authority.Controllers
 {
     public class FormsAuthenticationController : Controller
     {
+        //在此创建一个静态的 AccountHelper 对象用来确保其生命期在整个web应用程序运行时始终存在，
+        //如果创建一个非静态的 AccountHelper 对象会在登录其他网页时重新初始化而导致在一个页面中保存的数据在另一个页面消失。
         static AccountHelper account=new AccountHelper();
 
-        // GET: FormsAuthentication
+        //登录视图
         public ActionResult Login()
         {
             return View();
@@ -42,11 +44,13 @@ namespace Authority.Controllers
             return View();
         }
 
+        //用来表示登录成功
         [Authorize]
         public ActionResult AfterAuthority(AccountHelper helper)
         {
             return View(helper);
         }
+
 
         [Authorize]
         public ActionResult Edit()
@@ -62,15 +66,19 @@ namespace Authority.Controllers
             //获得配置文件的全路径
             string strFileName = AppDomain.CurrentDomain.BaseDirectory+"Web.Config";
             doc.Load(strFileName);
+
+            //找到配置文件中的所有 user 节点，找到与当前账户匹配的节点并进行修改
             XmlNodeList nodes = doc.GetElementsByTagName("user");
             for (int i = 0; i < nodes.Count; i++)
-            {
+            {                
                 string _name = nodes[i].Attributes["name"]==null?
                     "":nodes[i].Attributes["name"].Value;
                 if (_name==account.UserName)
                 {
                     nodes[i].Attributes["name"].Value = changedAccount.UserName;
                     nodes[i].Attributes["password"].Value = changedAccount.Password;
+
+                    //清除缓存并退出循环
                     FormsAuthentication.SignOut();
                     break;
                 }
@@ -97,11 +105,14 @@ namespace Authority.Controllers
             string strFileName = AppDomain.CurrentDomain.BaseDirectory + "Web.Config";
             doc.Load(strFileName);
             XmlNodeList nodes = doc.GetElementsByTagName("user");
+            //获取 user 节点的父节点
             XmlNode credentials = nodes[0].ParentNode;
+            //获得任意一个 user 节点的深拷贝
             XmlNode child = nodes[0].Clone();
 
             child.Attributes["name"].Value = newAccount.UserName;
             child.Attributes["password"].Value = newAccount.Password;
+            //将子结点添加到父节点
             credentials.AppendChild(child);
 
             //将修改后的 Web.config 进行保存
